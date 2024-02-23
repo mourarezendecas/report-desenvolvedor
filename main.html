@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="resources/style/style.css"/>
+    <link rel="icon" type="image/x-icon" href="resources/style/favicon.ico">
+    <title>Relatório do desenvolvedor</title>
+</head>
+<body>
+
+<header>
+    <h1>Relatório do desenvolvedor</h1>
+</header>
+
+<div class="container-form">
+    <form id="form" class="report-desenvolvedor">
+            <div class="container-nivel1">
+                <label class="titulo-1" for="objetivos">Objetivos</label>
+                <textarea
+                        required
+                        name="objetivos"
+                        id="objetivos"
+                        rows="5"
+                        placeholder="- Liste aqui os objetivos esperados pelo ticket &#10;- Marque com ✅ para os que foram atingidos e ❌ para os que não foram atingidos"
+                ></textarea>
+            </div>
+            <div class="container-nivel1">
+                <label class="titulo-1" for="solucao">Abordagem do cenário</label>
+                <textarea
+                        required
+                        name="solucao"
+                        id="solucao"
+                        cols="30"
+                        rows="8"
+                        placeholder="Descreva a abordagem do cenário proposto, tomadas de decisões, dificuldades encontradas e soluções adotadas."  
+                ></textarea>
+            </div>
+            <div class="container-nivel1">
+                <label class="titulo-1" for="testes">Testes unitários desenvolvidos</label>
+                <textarea
+                        required
+                        name="testes"
+                        id="testes"
+                        cols="30"
+                        rows="5"
+                        placeholder="Descreva resumidamente os testes automatizados criados. Caso não houver teste, comente que não foi feito e, se possível, o porquê."
+                ></textarea>
+            </div>
+        <div class="button-container">
+            <button class="submit-button" type="submit" id="generate" form="form">Gerar</button>
+        </div>
+    </form>
+</div>
+<div id="result" class="result"></div>
+
+<script>
+    const objetivos = document.getElementById('objetivos');
+    const solucao = document.getElementById('solucao');
+    const testes = document.getElementById('testes');
+    const form = document.getElementById("form");
+    const result = document.getElementById('result');
+
+    function generateReport(event) {
+        event.preventDefault();
+        result.innerHTML = "";
+        const report = gerarTextoReport();
+        result.innerText = report;
+    
+        // Adicionamos a chamada à área de transferência dentro de um evento de clique do usuário
+        document.body.addEventListener('click', () => {
+            navigator.clipboard.writeText(report)
+                .then(() => {
+                    alert("Relatório copiado para a área de transferência");
+                })
+                .catch((error) => {
+                    console.error("Erro ao copiar para a área de transferência:", error);
+                });
+        }, { once: true });
+    }
+    
+    function gerarTextoReport() {
+        return `
+        # Report do desenvolvedor \n
+        ### Objetivos \n
+        ${objetivos.value}\n
+        ### Comentários do dev: \n
+        #### *Abordagem do cenário proposto* \n
+        ${solucao.value}\n
+        #### *Testes desenvolvidos*\n
+        ${testes.value}`;
+    }
+    
+    form.addEventListener("submit", generateReport);
+</script>
+</body>
+</html>
